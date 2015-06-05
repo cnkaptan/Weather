@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -85,12 +86,15 @@ public class MainActivity extends AppCompatActivity  implements
     private CurrentWeatherResponse todayWR;
     private WeeklyWeatherResponse weeklyWR;
     private Gson gson;
+    private int mActionBarSize;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
@@ -112,6 +116,8 @@ public class MainActivity extends AppCompatActivity  implements
 
         mTitle = mDrawerTitle = getTitle();
         actionBar = getSupportActionBar();
+
+
 
         actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.blue));
 
@@ -152,6 +158,11 @@ public class MainActivity extends AppCompatActivity  implements
         super.onResume();
         Log.e(TAG, "onStart");
         mGoogleApiClient.connect();
+
+        final TypedArray styledAttributes = getTheme().obtainStyledAttributes(
+                new int[] { android.R.attr.actionBarSize });
+        mActionBarSize = (int) styledAttributes.getDimension(0, 0);
+
 
         gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         getDataAndSetUI(gpsLocation);
@@ -259,6 +270,7 @@ public class MainActivity extends AppCompatActivity  implements
             case R.id.action_settings:
                 Intent intent = new Intent(getApplicationContext(), PrefActivity.class);
                 intent.putExtra(SearchManager.QUERY, actionBar.getTitle());
+                intent.putExtra("actionManager",mActionBarSize);
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, 0);
