@@ -152,12 +152,17 @@ public class MainActivity extends AppCompatActivity  implements
         super.onResume();
         Log.e(TAG, "onStart");
         mGoogleApiClient.connect();
+
         gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        getDataAndSetUI(gpsLocation);
 
 
-        if (gpsLocation != null && isNetworkAvailable()) {
-            latitude = gpsLocation.getLatitude();
-            longitude = gpsLocation.getLongitude();
+    }
+
+    private void getDataAndSetUI(Location location) {
+        if (location != null && isNetworkAvailable()) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
 
             weatherApi.getCurrentWeather(latitude + "", longitude + "", new Callback<CurrentWeatherResponse>() {
                 @Override
@@ -189,8 +194,6 @@ public class MainActivity extends AppCompatActivity  implements
         }else if (!isNetworkAvailable()) {
             showMaterialDialogNetwork();
         }
-
-
     }
 
     @Override
@@ -330,40 +333,7 @@ public class MainActivity extends AppCompatActivity  implements
     private void handleNewLocation(Location mCurrentLocation) {
         Log.e(TAG,"Latitude = "+mCurrentLocation.getLatitude()+"\tLongitude = "+mCurrentLocation.getLongitude());
 
-        if (isNetworkAvailable()) {
-            latitude = mCurrentLocation.getLatitude();
-            longitude = mCurrentLocation.getLongitude();
-
-            weatherApi.getCurrentWeather(latitude + "", longitude + "", new Callback<CurrentWeatherResponse>() {
-                @Override
-                public void success(CurrentWeatherResponse currentWeatherResponse, Response response) {
-                    Log.e(TAG, "Success");
-                    todayWR = currentWeatherResponse;
-                    selectItem(0);
-
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.e(TAG, "failure = " + error.toString());
-                }
-            });
-
-
-            weatherApi.getWeaklyWeather(latitude + "", longitude + "", "16", new Callback<WeeklyWeatherResponse>() {
-                @Override
-                public void success(WeeklyWeatherResponse weeklyWeatherResponse, Response response) {
-                    weeklyWR = weeklyWeatherResponse;
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-
-                }
-            });
-        }else {
-            showMaterialDialogNetwork();
-        }
+        getDataAndSetUI(mCurrentLocation);
     }
 
     @Override
