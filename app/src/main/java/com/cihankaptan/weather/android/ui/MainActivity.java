@@ -5,23 +5,17 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,23 +29,19 @@ import com.cihankaptan.weather.R;
 import com.cihankaptan.weather.android.adapter.SectionAdapter;
 import com.cihankaptan.weather.android.model.CurrentWeatherResponse;
 import com.cihankaptan.weather.android.model.WeeklyWeatherResponse;
-import com.cihankaptan.weather.android.service.WeatherApi;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import retrofit.Callback;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity  implements
+public class MainActivity extends BaseActivity  implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -67,10 +57,7 @@ public class MainActivity extends AppCompatActivity  implements
     public static final String TAG = MainActivity.class.getSimpleName();
     private Location mCurrentLocation;
     private LocationRequest mLocationRequest;
-    private LocationManager locationManager;
     private Location gpsLocation;
-    private boolean isGPSEnabled;
-    private boolean isNetworkEnabled;
     private int LOCATION_RECUEST;
     private MaterialDialog dialog;
 
@@ -78,14 +65,11 @@ public class MainActivity extends AppCompatActivity  implements
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mSectionTitles = {"Today", "Forecast"};
-    private ActionBar actionBar;
     private ActionBarDrawerToggle mDrawerToggle;
     private double latitude;
     private double longitude;
-    private WeatherApi weatherApi;
     private CurrentWeatherResponse todayWR;
     private WeeklyWeatherResponse weeklyWR;
-    private Gson gson;
     private int mActionBarSize;
 
     @Override
@@ -94,18 +78,9 @@ public class MainActivity extends AppCompatActivity  implements
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gson = gsonBuilder.create();
-
         setGoogleApiClient();
         setLocationRequest();
-        setRestAdapter();
 
-        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         if (!isNetworkAvailable()){
             showMaterialDialogNetwork();
@@ -115,20 +90,12 @@ public class MainActivity extends AppCompatActivity  implements
         }
 
         mTitle = mDrawerTitle = getTitle();
-        actionBar = getSupportActionBar();
-
-
-
-        actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.blue));
 
         //Shadow
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         mDrawerList.setAdapter(new SectionAdapter(mSectionTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -158,11 +125,6 @@ public class MainActivity extends AppCompatActivity  implements
         super.onResume();
         Log.e(TAG, "onStart");
         mGoogleApiClient.connect();
-
-        final TypedArray styledAttributes = getTheme().obtainStyledAttributes(
-                new int[] { android.R.attr.actionBarSize });
-        mActionBarSize = (int) styledAttributes.getDimension(0, 0);
-
 
         gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         getDataAndSetUI(gpsLocation);
@@ -268,7 +230,7 @@ public class MainActivity extends AppCompatActivity  implements
         // Handle action buttons
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent intent = new Intent(getApplicationContext(), PrefActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PrefsActivity.class);
                 intent.putExtra(SearchManager.QUERY, actionBar.getTitle());
                 intent.putExtra("actionManager",mActionBarSize);
 
@@ -357,60 +319,6 @@ public class MainActivity extends AppCompatActivity  implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager manager = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        boolean isAvailable = false;
-        if (networkInfo != null && networkInfo.isConnected()) {
-            isAvailable = true;
-        }
-
-        return isAvailable;
-    }
-
-
-    private void showMaterialDialogNetwork() {
-
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .title("Opss , Sorry!")
-                .content("Please check network settings.")
-                .positiveText("Wifi ")
-                .negativeText("Mobile")
-                .neutralText("Cancel")
-                .autoDismiss(true);
-        builder.callback(new MaterialDialog.ButtonCallback() {
-            @Override
-            public void onPositive(MaterialDialog dialog) {
-                super.onPositive(dialog);
-                startActivityForResult(new Intent(Settings.ACTION_SETTINGS), 0);
-
-            }
-
-            @Override
-            public void onNegative(MaterialDialog dialog) {
-                super.onNegative(dialog);
-//                               startActivityForResult(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS),0);
-                startActivityForResult(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS), 0);
-            }
-
-            @Override
-            public void onNeutral(MaterialDialog dialog) {
-                super.onNeutral(dialog);
-
-            }
-        });
-        builder.show();
-
-    }
-
-    public void showMaterialAboutDialog(){
-        new MaterialDialog.Builder(this)
-                .title("About")
-                .content("Weather app by made \nCihan Kaptan")
-                .positiveText("OK")
-                .show();
-    }
 
     private void showMaterialDialogLocation() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
@@ -453,14 +361,4 @@ public class MainActivity extends AppCompatActivity  implements
             dialog.dismiss();
         }
     }
-
-    public void setRestAdapter() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://api.openweathermap.org/data/2.5")
-                .build();
-
-        weatherApi = restAdapter.create(WeatherApi.class);
-    }
-
-
 }
