@@ -15,4 +15,5 @@
     <string name="action_example">Example action</string>
     <string name="drawer_open">Aciliyor</string>
     <string name="drawer_close">Kapaniyor</string>
+    <string name="settings">Settings</string>
 </resources>

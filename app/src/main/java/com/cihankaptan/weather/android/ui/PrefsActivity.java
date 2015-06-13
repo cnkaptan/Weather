@@ -16,9 +16,7 @@ public class PrefsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
-
-
-        setTitle("Settings");
+        setTitle(getString(R.string.settings));
 
         getFragmentManager().beginTransaction().add(R.id.fragment,new PrefsFragment()).commit();
 

@@ -8,10 +8,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcer"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/drawer_item_margin_left_and_right"
+        android:layout_marginTop="@dimen/drawer_item_margin_top_and_bottom"
+        android:layout_marginBottom="@dimen/drawer_item_margin_top_and_bottom"
+        android:layout_marginRight="@dimen/drawer_item_margin_left_and_right"
         android:padding="8dp"/>
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_alignTop="@id/item_icon"
         android:layout_alignBottom="@id/item_icon"
         android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"/>
+        android:layout_marginLeft="@dimen/drawer_item_margin_left_and_right"/>
 
 
 

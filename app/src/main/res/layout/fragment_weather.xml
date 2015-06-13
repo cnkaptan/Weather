@@ -3,11 +3,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.navigationdrawer.ui.WeatherFragment">
 
-    <ListView
-        android:id="@+id/weather_list"
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#E1E1E1"
-        android:dividerHeight="2dp"/>
+        android:id="@+id/weatherList"
+
+        />
+
+
+
 
 </FrameLayout>

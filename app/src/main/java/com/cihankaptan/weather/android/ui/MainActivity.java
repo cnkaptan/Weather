@@ -16,13 +16,13 @@ import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cihankaptan.weather.R;
@@ -41,17 +41,18 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends BaseActivity  implements
+public class MainActivity extends BaseActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
     @InjectView(R.id.content_frame)
     FrameLayout contentFrame;
-    @InjectView(R.id.left_drawer)
-    ListView mDrawerList;
+
     @InjectView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    @InjectView(R.id.left_drawer)
+    RecyclerView mDrawerList;
 
     private GoogleApiClient mGoogleApiClient;
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -82,10 +83,10 @@ public class MainActivity extends BaseActivity  implements
         setLocationRequest();
 
 
-        if (!isNetworkAvailable()){
+        if (!isNetworkAvailable()) {
             showMaterialDialogNetwork();
         }
-        if (!isGPSEnabled){
+        if (!isGPSEnabled) {
             showMaterialDialogLocation();
         }
 
@@ -94,8 +95,9 @@ public class MainActivity extends BaseActivity  implements
         //Shadow
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-        mDrawerList.setAdapter(new SectionAdapter(mSectionTitles));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setAdapter(new SectionAdapter(mSectionTitles,this));
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mDrawerList.setLayoutManager(layoutManager);
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  /* host Activity */
@@ -164,7 +166,7 @@ public class MainActivity extends BaseActivity  implements
 
                 }
             });
-        }else if (!isNetworkAvailable()) {
+        } else if (!isNetworkAvailable()) {
             showMaterialDialogNetwork();
         }
     }
@@ -172,26 +174,19 @@ public class MainActivity extends BaseActivity  implements
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e(TAG,"onStop");
+        Log.e(TAG, "onStop");
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
         }
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
-
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         // update the main content by replacing fragments
         Fragment fragment;
-        if (position == 0){
+        if (position == 0) {
             fragment = TodayFragment.newInstance(todayWR);
-        }else{
+        } else {
             String json = gson.toJson(weeklyWR);
             fragment = WeatherFragment.newInstance(json);
         }
@@ -205,6 +200,7 @@ public class MainActivity extends BaseActivity  implements
         setTitle(mSectionTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
@@ -232,7 +228,7 @@ public class MainActivity extends BaseActivity  implements
             case R.id.action_settings:
                 Intent intent = new Intent(getApplicationContext(), PrefsActivity.class);
                 intent.putExtra(SearchManager.QUERY, actionBar.getTitle());
-                intent.putExtra("actionManager",mActionBarSize);
+                intent.putExtra("actionManager", mActionBarSize);
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, 0);
@@ -286,14 +282,14 @@ public class MainActivity extends BaseActivity  implements
     public void onConnected(Bundle bundle) {
         Log.e(TAG, "Location services connected.");
 
-        if (gpsLocation != null){
+        if (gpsLocation != null) {
             Log.e(TAG, gpsLocation.toString());
             handleNewLocation(gpsLocation);
-        }else if(isGPSEnabled && gpsLocation == null && !isNetworkEnabled){
+        } else if (isGPSEnabled && gpsLocation == null && !isNetworkEnabled) {
             showMaterialDialogLocation();
-        }else if (mCurrentLocation == null) {
+        } else if (mCurrentLocation == null) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        }else{
+        } else {
             handleNewLocation(mCurrentLocation);
         }
 
@@ -305,7 +301,7 @@ public class MainActivity extends BaseActivity  implements
     }
 
     private void handleNewLocation(Location mCurrentLocation) {
-        Log.e(TAG,"Latitude = "+mCurrentLocation.getLatitude()+"\tLongitude = "+mCurrentLocation.getLongitude());
+        Log.e(TAG, "Latitude = " + mCurrentLocation.getLatitude() + "\tLongitude = " + mCurrentLocation.getLongitude());
 
         getDataAndSetUI(mCurrentLocation);
     }
@@ -357,7 +353,7 @@ public class MainActivity extends BaseActivity  implements
         Log.e(TAG, prefList);
         selectItem(0);
 
-        if (requestCode == Activity.RESULT_OK && resultCode == LOCATION_RECUEST){
+        if (requestCode == Activity.RESULT_OK && resultCode == LOCATION_RECUEST) {
             dialog.dismiss();
         }
     }

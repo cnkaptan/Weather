@@ -1,60 +1,73 @@
 package com.cihankaptan.weather.android.adapter;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cihankaptan.weather.R;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import com.cihankaptan.weather.android.ui.MainActivity;
 
 /**
  * Created by cnkaptan on 6/3/15.
  */
-public class SectionAdapter extends BaseAdapter {
+public class SectionAdapter extends RecyclerView.Adapter<SectionAdapter.SectionViewHolder>{
     String[] sections;
-    @InjectView(R.id.item_icon)
-    ImageView itemIcon;
-    @InjectView(R.id.item_text)
-    TextView itemText;
+    MainActivity mainActivity;
 
-
-    public SectionAdapter(String[] sections) {
+    public SectionAdapter(String[] sections,MainActivity mainActivity) {
         this.sections = sections;
+        this.mainActivity = mainActivity;
     }
 
     @Override
-    public int getCount() {
+    public SectionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drawer_list_item, parent, false);
+        SectionViewHolder sectionViewHolder = new SectionViewHolder(view);
+        return sectionViewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(SectionViewHolder holder, int position) {
+        holder.bind(position);
+
+    }
+
+    @Override
+    public int getItemCount() {
         return sections.length;
     }
 
-    @Override
-    public String getItem(int position) {
-        return sections[position];
-    }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
 
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drawer_list_item, null, false);
-        ButterKnife.inject(this,view);
-
-        if (position == 0){
-            itemIcon.setImageResource(R.drawable.ic_action_sun);
-        }else{
-            itemIcon.setImageResource(R.drawable.ic_action_calendar);
+    public class SectionViewHolder extends RecyclerView.ViewHolder{
+        ImageView itemIcon;
+        TextView itemText;
+        public SectionViewHolder(View itemView) {
+            super(itemView);
+            itemIcon = (ImageView) itemView.findViewById(R.id.item_icon);
+            itemText = (TextView) itemView.findViewById(R.id.item_text);
         }
-        itemText.setText(getItem(position));
 
-        return view;
+
+        public void bind(final int position){
+            if (position == 0){
+                itemIcon.setImageResource(R.drawable.ic_action_sun);
+            }else{
+                itemIcon.setImageResource(R.drawable.ic_action_calendar);
+            }
+            itemText.setText(sections[position]);
+            itemText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainActivity.selectItem(position);
+                }
+            });
+        }
+
+
     }
 
 }
