@@ -4,4 +4,6 @@
     <color name="blue">#427FED</color>
     <color name="wf_list_item_weather_condition_color"> #212121</color>
     <color name="wf_list_item_weather_degree_color">#757575</color>
+    <color name="light_blue">#92CBF7</color>
+    <color name="ligh_gray">#B2B4B6</color>
 </resources>

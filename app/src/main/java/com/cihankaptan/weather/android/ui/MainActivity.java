@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cihankaptan.weather.R;
@@ -46,8 +45,6 @@ public class MainActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    @InjectView(R.id.content_frame)
-    FrameLayout contentFrame;
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -56,7 +53,6 @@ public class MainActivity extends BaseActivity implements
 
     private GoogleApiClient mGoogleApiClient;
     public static final String TAG = MainActivity.class.getSimpleName();
-    private Location mCurrentLocation;
     private LocationRequest mLocationRequest;
     private Location gpsLocation;
     private int LOCATION_RECUEST;
@@ -65,13 +61,13 @@ public class MainActivity extends BaseActivity implements
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] mSectionTitles = {"Today", "Forecast"};
+    private String[] mSectionTitles;
     private ActionBarDrawerToggle mDrawerToggle;
     private double latitude;
     private double longitude;
     private CurrentWeatherResponse todayWR;
     private WeeklyWeatherResponse weeklyWR;
-    private int mActionBarSize;
+    private Location mCurrentLocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +78,7 @@ public class MainActivity extends BaseActivity implements
         setGoogleApiClient();
         setLocationRequest();
 
+        mSectionTitles = getResources().getStringArray(R.array.sections);
 
         if (!isNetworkAvailable()) {
             showMaterialDialogNetwork();
@@ -125,7 +122,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "onStart");
+
         mGoogleApiClient.connect();
 
         gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -188,7 +185,7 @@ public class MainActivity extends BaseActivity implements
             fragment = TodayFragment.newInstance(todayWR);
         } else {
             String json = gson.toJson(weeklyWR);
-            fragment = WeatherFragment.newInstance(json);
+            fragment = ForecastFragment.newInstance(json);
         }
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -228,7 +225,7 @@ public class MainActivity extends BaseActivity implements
             case R.id.action_settings:
                 Intent intent = new Intent(getApplicationContext(), PrefsActivity.class);
                 intent.putExtra(SearchManager.QUERY, actionBar.getTitle());
-                intent.putExtra("actionManager", mActionBarSize);
+
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, 0);
@@ -308,7 +305,6 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.e(TAG, "Location services suspended. Please reconnect.");
     }
 
     @Override
@@ -318,10 +314,10 @@ public class MainActivity extends BaseActivity implements
 
     private void showMaterialDialogLocation() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .title("Opss , Sorry!")
-                .content("Please check Location and GPS settings.")
-                .positiveText("Location Settings")
-                .negativeText("Cancel")
+                .title(getString(R.string.sorry))
+                .content(R.string.check_location_setting_text)
+                .positiveText(R.string.location_settings)
+                .negativeText(getString(R.string.cancel))
                 .autoDismiss(true);
         builder.callback(new MaterialDialog.ButtonCallback() {
             @Override
@@ -349,7 +345,7 @@ public class MainActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String prefList = sharedPreferences.getString("PREF_LIST", "no selection");
+        String prefList = sharedPreferences.getString(getString(R.string.pref_list), "no selection");
         Log.e(TAG, prefList);
         selectItem(0);
 

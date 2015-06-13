@@ -22,4 +22,22 @@
     <string name="hPa">hPa</string>
     <string name="km_h">km/h</string>
     <string name="minus">-</string>
+    <string name="open_weather_img_base_url">http://openweathermap.org/img/w/</string>
+    <string name="fahreneit">fahreneit</string>
+    <string name="celcius">celcius</string>
+    <string name="open_weather_base_url">http://api.openweathermap.org/data/2.5</string>
+    <string name="about">About</string>
+    <string name="about_me_by_person">Weather app by made \nCihan Kaptan</string>
+    <string name="ok">OK</string>
+    <string name="sorry">Opss , Sorry!</string>
+    <string name="check_network_text">Please check network settings.</string>
+    <string name="wifi">"Wifi "</string>
+    <string name="mobile">Mobile</string>
+    <string name="cancel">Cancel</string>
+    <string name="kelvin">kelvin</string>
+    <string name="pref_list">PREF_LIST</string>
+    <string name="check_location_setting_text">Please check Location and GPS settings.</string>
+    <string name="location_settings">Location Settings</string>
+
+
 </resources>

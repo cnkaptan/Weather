@@ -52,7 +52,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void setRestAdapter() {
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://api.openweathermap.org/data/2.5")
+                .setEndpoint(getString(R.string.open_weather_base_url))
                 .build();
 
         weatherApi = restAdapter.create(WeatherApi.class);
@@ -61,20 +61,20 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showMaterialAboutDialog(){
         new MaterialDialog.Builder(this)
-                .title("About")
-                .content("Weather app by made \nCihan Kaptan")
-                .positiveText("OK")
+                .title(R.string.about)
+                .content(R.string.about_me_by_person)
+                .positiveText(R.string.ok)
                 .show();
     }
 
     public void showMaterialDialogNetwork() {
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .title("Opss , Sorry!")
-                .content("Please check network settings.")
-                .positiveText("Wifi ")
-                .negativeText("Mobile")
-                .neutralText("Cancel")
+                .title(R.string.sorry)
+                .content(R.string.check_network_text)
+                .positiveText(R.string.wifi)
+                .negativeText(R.string.mobile)
+                .neutralText(R.string.cancel)
                 .autoDismiss(true);
         builder.callback(new MaterialDialog.ButtonCallback() {
             @Override

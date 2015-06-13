@@ -11,4 +11,5 @@
     <dimen name="normal_text_size">18sp</dimen>
     <dimen name="ft_weather_degree_text_size">24sp</dimen>
     <dimen name="big_text_size">32sp</dimen>
+    <dimen name="gray_bg_width_height">64dp</dimen>
 </resources>

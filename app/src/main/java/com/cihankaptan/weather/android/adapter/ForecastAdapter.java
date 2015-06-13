@@ -25,20 +25,18 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     private String path;
     private String degreeType;
     private String degree;
-    public final String CELCIUS = "celcius";
-    public final String FAHRENEIT = "fahreneit";
-    public final String KELVIN = "kelvin";
     private String description;
     private int anInt;
-
-    public ForecastAdapter(WeeklyWeatherResponse weeklyWeatherResponse){
-        forecastList = (ArrayList<WeeklyItemEntity>) weeklyWeatherResponse.getList();
-    }
+    private Context context;
+    private String[] daysOfWeek;
 
 
-    public ForecastAdapter(WeeklyWeatherResponse weeklyWeatherResponse, String degreeType) {
+
+    public ForecastAdapter(WeeklyWeatherResponse weeklyWeatherResponse, String degreeType,Context context) {
         forecastList = (ArrayList<WeeklyItemEntity>)weeklyWeatherResponse.getList();
         this.degreeType = degreeType;
+        this.context = context;
+        daysOfWeek = context.getResources().getStringArray(R.array.daysOfWeek);
     }
 
     @Override
@@ -73,20 +71,20 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
 
         public void bind(WeeklyItemEntity weeklyItemEntity){
-            path = "http://openweathermap.org/img/w/" +
+            path = context.getString(R.string.open_weather_img_base_url) +
                             weeklyItemEntity.getWeather().get(0).getIcon() + ".png";
             Picasso.with(context).load(path)
                     .into(weatherIcon);
 
             degree = weeklyItemEntity.getTemp().getDay();
-            if (degreeType.equals(CELCIUS)){
+            if (degreeType.equals(context.getString(R.string.celcius))){
                     degree = String.valueOf((int) (Double.parseDouble(degree) - 273));
 
-            }else if(degreeType.equals(FAHRENEIT)){
+            }else if(degreeType.equals(context.getString(R.string.fahreneit))){
                     degree  = String.valueOf((int) (Double.parseDouble(degree) - 273) * 9 / 5 + 32);
 
             }
-            weatherDegree.setText(degree+"\u00B0");
+            weatherDegree.setText(degree+context.getString(R.string.degree_symbol));
 
             long timestamp = Long.valueOf(weeklyItemEntity.getDt())*1000l;
             Calendar cal = Calendar.getInstance();
@@ -102,7 +100,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 str = new String(stringArray);
                 builder.append(str).append(" ");
             }
-            builder.append(getWeekOfDay(anInt));
+            builder.append(getWeekOfDay(anInt-1));
 
             weatherCondition.setText(builder.toString());
         }
@@ -111,15 +109,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
 
     String getWeekOfDay(int day){
-        switch (day){
-            case 1: return "Sunday";
-            case 2: return "Monday";
-            case 3: return "Tuesday";
-            case 4: return "Wednesday";
-            case 5: return "Thursday";
-            case 6: return "Friday";
-            case 7: return "Saturday";
-            default: return "";
-        }
+        return daysOfWeek[day];
     }
 }

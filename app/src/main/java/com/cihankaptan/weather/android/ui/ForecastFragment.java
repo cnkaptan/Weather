@@ -22,32 +22,29 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class WeatherFragment extends Fragment {
+public class ForecastFragment extends Fragment {
 
-    private static final String TAG = WeatherFragment.class.toString();
+    private static final String TAG = ForecastFragment.class.toString();
     WeeklyWeatherResponse weeklyWeatherResponse;
     @InjectView(R.id.weatherList)
     RecyclerView weatherList;
 
     private View view;
     private String degreeType;
-    public final String CELCIUS = "celcius";
-    public final String FAHRENEIT = "fahreneit";
-    public final String KELVIN = "kelvin";
     public GsonBuilder gsonBuilder;
     public Gson gson;
     public String json;
 
-    public static WeatherFragment newInstance(String json) {
+    public static ForecastFragment newInstance(String json) {
 
-        WeatherFragment fragment = new WeatherFragment();
+        ForecastFragment fragment = new ForecastFragment();
         Bundle args = new Bundle();
         args.putString("json", json);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public WeatherFragment() {
+    public ForecastFragment() {
         // Required empty public constructor
     }
 
@@ -65,21 +62,20 @@ public class WeatherFragment extends Fragment {
         }
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefList = sharedPreferences.getString("PREF_LIST", "no selection");
+        String prefList = sharedPreferences.getString(getActivity().getString(R.string.pref_list), "no selection");
 
-        if (prefList != null) {
-            if (prefList.equals("metric")) {
-                degreeType = CELCIUS;
-//                degree = String.valueOf((int)(Double.parseDouble(currentWeatherResponse.getMain().getTemp()) - 273));
+        switch (prefList) {
+            case "metric":
+                degreeType = getString(R.string.celcius);
 
-            } else if (prefList.equals("imperial")) {
-                degreeType = FAHRENEIT;
-//                degree  = String.valueOf((int)(Double.parseDouble(currentWeatherResponse.getMain().getTemp()) - 273)*9/5 +32);
+                break;
+            case "imperial":
+                degreeType = getString(R.string.fahreneit);
 
-            } else {
-                degreeType = KELVIN;
-//                degree =  currentWeatherResponse.getMain().getTemp();
-            }
+                break;
+            default:
+                degreeType = getString(R.string.kelvin);
+                break;
         }
     }
 
@@ -90,7 +86,7 @@ public class WeatherFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.inject(this, view);
 
-        ForecastAdapter forecastAdapter = new ForecastAdapter(weeklyWeatherResponse, degreeType);
+        ForecastAdapter forecastAdapter = new ForecastAdapter(weeklyWeatherResponse, degreeType,getActivity());
         weatherList.setAdapter(forecastAdapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(container.getContext());

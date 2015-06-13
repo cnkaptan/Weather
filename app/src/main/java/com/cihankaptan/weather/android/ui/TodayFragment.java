@@ -21,7 +21,6 @@ import butterknife.InjectView;
 
 
 public class TodayFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
     private static final String TAG = TodayFragment.class.getSimpleName();
     @InjectView(R.id.weather_humidity)
     TextView weatherHumidity;
@@ -73,7 +72,7 @@ public class TodayFragment extends Fragment {
         }
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefList = sharedPreferences.getString("PREF_LIST", "no selection");
+        String prefList = sharedPreferences.getString(getActivity().getString(R.string.pref_list), "no selection");
 
         if (prefList != null && currentWeatherResponse != null){
             if (prefList.equals("metric")){
@@ -96,12 +95,12 @@ public class TodayFragment extends Fragment {
         ButterKnife.inject(this, view);
 
         if (currentWeatherResponse != null) {
-            weatherHumidity.setText(currentWeatherResponse.getMain().getHumidity()+"%");
-            weatherPressure.setText(currentWeatherResponse.getMain().getPressure()+" hPa");
-            weatherWind.setText(currentWeatherResponse.getWind().getSpeed()+" km/h");
+            weatherHumidity.setText(currentWeatherResponse.getMain().getHumidity()+getString(R.string.percent_symbol));
+            weatherPressure.setText(currentWeatherResponse.getMain().getPressure()+getString(R.string.hPa));
+            weatherWind.setText(currentWeatherResponse.getWind().getSpeed()+getString(R.string.km_h));
             weatherDirection.setText(currentWeatherResponse.getWind().getDirection());
-            weatherDegree.setText(degree+"\u00B0");
-            path = "http://openweathermap.org/img/w/" +
+            weatherDegree.setText(degree+getString(R.string.degree_symbol));
+            path = getActivity().getString(R.string.open_weather_img_base_url) +
                     currentWeatherResponse.getWeather().get(0).getIcon() + ".png";
             Picasso.with(container.getContext()).load(path)
                                                 .into(weatherIcon);
