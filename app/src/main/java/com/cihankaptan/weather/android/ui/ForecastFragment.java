@@ -1,10 +1,9 @@
 package com.cihankaptan.weather.android.ui;
 
 
+import android.app.Activity;
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,6 +33,7 @@ public class ForecastFragment extends Fragment {
     public GsonBuilder gsonBuilder;
     public Gson gson;
     public String json;
+    private MainActivity activity;
 
     public static ForecastFragment newInstance(String json) {
 
@@ -49,6 +49,12 @@ public class ForecastFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (MainActivity)activity;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -61,8 +67,9 @@ public class ForecastFragment extends Fragment {
             Log.e(TAG, weeklyWeatherResponse.toString());
         }
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefList = sharedPreferences.getString(getActivity().getString(R.string.pref_list), "no selection");
+
+        String prefList = activity.weatherApp.getSharedPreferences()
+                .getString(getActivity().getString(R.string.pref_list), "no selection");
 
         switch (prefList) {
             case "metric":

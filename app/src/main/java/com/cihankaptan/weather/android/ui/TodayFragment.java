@@ -2,9 +2,7 @@ package com.cihankaptan.weather.android.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +47,7 @@ public class TodayFragment extends Fragment {
     private View view;
     private String path;
     private String degree;
+    private MainActivity activity;
 
 
     // TODO: Rename and change types and number of parameters
@@ -65,14 +64,20 @@ public class TodayFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (MainActivity)activity;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentWeatherResponse = getArguments().getParcelable("today");
         }
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefList = sharedPreferences.getString(getActivity().getString(R.string.pref_list), "no selection");
+        String prefList = activity.weatherApp.getSharedPreferences().
+                getString(getActivity().getString(R.string.pref_list), "no selection");
 
         if (prefList != null && currentWeatherResponse != null){
             if (prefList.equals("metric")){
@@ -112,10 +117,7 @@ public class TodayFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
+
 
     @Override
     public void onDetach() {

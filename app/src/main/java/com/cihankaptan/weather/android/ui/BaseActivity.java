@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cihankaptan.weather.R;
+import com.cihankaptan.weather.android.WeatherAppLication;
 import com.cihankaptan.weather.android.service.WeatherApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,6 +29,7 @@ public class BaseActivity extends AppCompatActivity {
     public WeatherApi weatherApi;
     public Gson gson;
     public ActionBar actionBar;
+    public WeatherAppLication weatherApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class BaseActivity extends AppCompatActivity {
         gson = gsonBuilder.create();
 
         setRestAdapter();
-
+        weatherApp = (WeatherAppLication)getApplication();
 
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
         isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
