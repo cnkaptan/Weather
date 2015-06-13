@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,23 +9,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcer"
-        android:layout_marginLeft="@dimen/drawer_item_margin_left_and_right"
-        android:layout_marginTop="@dimen/drawer_item_margin_top_and_bottom"
-        android:layout_marginBottom="@dimen/drawer_item_margin_top_and_bottom"
-        android:layout_marginRight="@dimen/drawer_item_margin_left_and_right"
-        android:padding="8dp"/>
+        android:layout_marginLeft="@dimen/wide_margin_padding"
+        android:layout_marginTop="@dimen/standart_margin_padding"
+        android:layout_marginBottom="@dimen/standart_margin_padding"
+        android:layout_marginRight="@dimen/wide_margin_padding"
+        android:padding="@dimen/standart_margin_padding"/>
 
     <TextView
         android:id="@+id/item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/item_icon"
-        android:textSize="20sp"
-        android:text="Cihan Kaptan"
+        android:textSize="@dimen/normal_text_size"
         android:layout_alignTop="@id/item_icon"
         android:layout_alignBottom="@id/item_icon"
         android:gravity="center_vertical"
-        android:layout_marginLeft="@dimen/drawer_item_margin_left_and_right"/>
+        android:layout_marginLeft="@dimen/wide_margin_padding"
+        tools:ignore="RtlHardcoded" />
 
 
 

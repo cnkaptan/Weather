@@ -16,4 +16,10 @@
     <string name="drawer_open">Aciliyor</string>
     <string name="drawer_close">Kapaniyor</string>
     <string name="settings">Settings</string>
+    <string name="degree_symbol">°</string>
+    <string name="percent_symbol">%</string>
+    <string name="mm">- mm</string>
+    <string name="hPa">hPa</string>
+    <string name="km_h">km/h</string>
+    <string name="minus">-</string>
 </resources>

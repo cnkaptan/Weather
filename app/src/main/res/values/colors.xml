@@ -2,4 +2,6 @@
 <resources>
     <color name="white">#FFF</color>
     <color name="blue">#427FED</color>
+    <color name="wf_list_item_weather_condition_color"> #212121</color>
+    <color name="wf_list_item_weather_degree_color">#757575</color>
 </resources>

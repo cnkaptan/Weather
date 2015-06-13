@@ -4,7 +4,7 @@
 
     <solid android:color="#92CBF7" />
 
-    <size android:height="80dp"
-        android:width="80dp" />
+    <size android:height="@dimen/wf_list_item_icon_bg_width_height"
+        android:width="@dimen/wf_list_item_icon_bg_width_height" />
 
 </shape>
