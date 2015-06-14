@@ -39,5 +39,5 @@ Thumbs.db
 *.iml
 *.ipr
 *.iws
+*.xml
 .idea/
-local.properties
