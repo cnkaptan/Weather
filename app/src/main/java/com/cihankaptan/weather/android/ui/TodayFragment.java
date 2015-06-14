@@ -74,17 +74,17 @@ public class TodayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            currentWeatherResponse = getArguments().getParcelable("today");
+            currentWeatherResponse = getArguments().getParcelable(activity.getString(R.string.today));
         }
 
         String prefList = activity.weatherApp.getSharedPreferences().
-                getString(getActivity().getString(R.string.pref_list), "no selection");
+                getString(getActivity().getString(R.string.pref_list), activity.getString(R.string.no_selection));
 
         if (prefList != null && currentWeatherResponse != null){
-            if (prefList.equals("metric")){
+            if (prefList.equals(activity.getString(R.string.metric))){
                 degree = String.valueOf((int) (Double.parseDouble(currentWeatherResponse.getMain().getTemp()) - 273));
 
-            }else if(prefList.equals("imperial")){
+            }else if(prefList.equals(activity.getString(R.string.imperial))){
                 degree  = String.valueOf((int) (Double.parseDouble(currentWeatherResponse.getMain().getTemp()) - 273) * 9 / 5 + 32);
 
             }else{

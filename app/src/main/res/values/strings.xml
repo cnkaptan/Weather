@@ -40,6 +40,12 @@
     <string name="location_settings">Location Settings</string>
     <string name="today_response">TODAY_RESPONSE</string>
     <string name="weekly_response">WEEKLY_RESPONSE</string>
+    <string name="metric">metric</string>
+    <string name="imperial">imperial</string>
+    <string name="no_selection">no selection</string>
+    <string name="today">today</string>
+    <string name="title">title</string>
+    <string name="content">content</string>
 
 
 </resources>

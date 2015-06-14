@@ -31,10 +31,8 @@
         android:id="@+id/weather_condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/wf_list_item_weather_condition_color"
-        android:textSize="@dimen/normal_text_size"
         android:layout_alignTop="@id/weather_icon_ll"
-        android:paddingTop="@dimen/standart_margin_padding"
+        android:textAppearance="@style/ForecastItemConditionTextStyle"
         android:layout_toRightOf="@id/weather_icon_ll"
         tools:ignore="RtlHardcoded" />
 
@@ -43,10 +41,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/degree_symbol"
-        android:textSize="@dimen/normal_text_size"
+        android:textAppearance="@style/ForecastItemDegreeTextStyle"
         android:textColor="@color/wf_list_item_weather_degree_color"
         android:layout_below="@id/weather_condition"
-        android:layout_alignLeft="@id/weather_condition"
-        android:layout_marginTop="@dimen/standart_margin_padding"/>
+        android:layout_alignLeft="@id/weather_condition"/>
 
 </RelativeLayout>
