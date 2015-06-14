@@ -47,5 +47,4 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.1'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.pnikosis:materialish-progress:1.5'
 }

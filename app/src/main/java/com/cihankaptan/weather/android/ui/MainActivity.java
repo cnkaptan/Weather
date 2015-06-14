@@ -31,7 +31,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,8 +48,6 @@ public class MainActivity extends BaseActivity implements
     DrawerLayout mDrawerLayout;
     @InjectView(R.id.left_drawer)
     RecyclerView mDrawerList;
-    @InjectView(R.id.progress_wheel)
-    ProgressWheel progressWheel;
 
     private GoogleApiClient mGoogleApiClient;
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -143,13 +140,11 @@ public class MainActivity extends BaseActivity implements
                     Log.e(TAG, "Success");
                     todayWR = currentWeatherResponse;
                     selectItem(0);
-                    progressWheel.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
                     Log.e(TAG, "failure = " + error.toString());
-                    progressWheel.setVisibility(View.INVISIBLE);
                 }
             });
 
@@ -279,16 +274,13 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.e(TAG, "Location services connected.");
-        progressWheel.setVisibility(View.VISIBLE);
         if (gpsLocation != null) {
             Log.e(TAG, gpsLocation.toString());
             handleNewLocation(gpsLocation);
         } else if (isGPSEnabled && gpsLocation == null && !isNetworkEnabled) {
-            progressWheel.setVisibility(View.INVISIBLE);
             showMaterialDialogLocation();
         } else if (mCurrentLocation == null) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-            progressWheel.setVisibility(View.INVISIBLE);
         } else {
             handleNewLocation(mCurrentLocation);
         }
