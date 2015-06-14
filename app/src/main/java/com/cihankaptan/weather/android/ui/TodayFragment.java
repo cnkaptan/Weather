@@ -16,31 +16,32 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.Optional;
 
 
 public class TodayFragment extends Fragment {
     private static final String TAG = TodayFragment.class.getSimpleName();
-    @InjectView(R.id.weather_humidity)
+    @Optional @InjectView(R.id.weather_humidity)
     TextView weatherHumidity;
-    @InjectView(R.id.weather_precipitation)
+    @Optional @InjectView(R.id.weather_precipitation)
     TextView weatherPrecipitation;
-    @InjectView(R.id.weather_pressure)
+    @Optional @InjectView(R.id.weather_pressure)
     TextView weatherPressure;
-    @InjectView(R.id.first_line)
+    @Optional @InjectView(R.id.first_line)
     LinearLayout firstLine;
-    @InjectView(R.id.weather_wind)
+    @Optional @InjectView(R.id.weather_wind)
     TextView weatherWind;
-    @InjectView(R.id.weather_direction)
+    @Optional @InjectView(R.id.weather_direction)
     TextView weatherDirection;
-    @InjectView(R.id.second_line)
+    @Optional @InjectView(R.id.second_line)
     LinearLayout secondLine;
-    @InjectView(R.id.weather_icon)
+    @Optional @InjectView(R.id.weather_icon)
     ImageView weatherIcon;
-    @InjectView(R.id.weather_condition)
+    @Optional @InjectView(R.id.weather_condition)
     TextView weatherCondition;
-    @InjectView(R.id.weather_city)
+    @Optional @InjectView(R.id.weather_city)
     TextView weatherCity;
-    @InjectView(R.id.weather_degree)
+    @Optional @InjectView(R.id.weather_degree)
     TextView weatherDegree;
     private String mParam1;
     private CurrentWeatherResponse currentWeatherResponse;

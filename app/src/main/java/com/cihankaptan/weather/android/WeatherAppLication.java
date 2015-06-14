@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 /**
  * Created by cnkaptan on 6/13/15.
  */
-public class WeatherAppLication extends Application {
+public class WeatherAppLication extends Application{
     public SharedPreferences sharedPreferences;
 
     @Override
@@ -24,4 +24,6 @@ public class WeatherAppLication extends Application {
     public void setSharedPreferences(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
     }
+
+
 }

@@ -6,7 +6,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,6 @@ public class ForecastFragment extends Fragment {
         if (getArguments() != null) {
             this.json = getArguments().getString("json");
             weeklyWeatherResponse = gson.fromJson(json, WeeklyWeatherResponse.class);
-            Log.e(TAG, weeklyWeatherResponse.toString());
         }
 
 
@@ -93,8 +91,10 @@ public class ForecastFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.inject(this, view);
 
-        ForecastAdapter forecastAdapter = new ForecastAdapter(weeklyWeatherResponse, degreeType,getActivity());
-        weatherList.setAdapter(forecastAdapter);
+        if (weeklyWeatherResponse !=null){
+            ForecastAdapter forecastAdapter = new ForecastAdapter(weeklyWeatherResponse, degreeType,getActivity());
+            weatherList.setAdapter(forecastAdapter);
+        }
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         weatherList.setLayoutManager(layoutManager);

@@ -161,8 +161,6 @@ public class MainActivity extends BaseActivity implements
 
                 }
             });
-        } else if (!isNetworkAvailable()) {
-            showMaterialDialogNetwork();
         }
     }
 
@@ -180,6 +178,7 @@ public class MainActivity extends BaseActivity implements
         // update the main content by replacing fragments
         Fragment fragment;
         if (position == 0) {
+
             fragment = TodayFragment.newInstance(todayWR);
         } else {
             String json = gson.toJson(weeklyWR);
@@ -348,6 +347,36 @@ public class MainActivity extends BaseActivity implements
 
         if (requestCode == Activity.RESULT_OK && resultCode == LOCATION_RECUEST) {
             dialog.dismiss();
+        }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (todayWR != null)
+            outState.putParcelable(getString(R.string.today_response),todayWR);
+
+        if (weeklyWR != null){
+            String weeklyJson = gson.toJson(weeklyWR);
+            outState.putString(getString(R.string.weekly_response), weeklyJson);
+        }
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null){
+            weeklyWR = gson.fromJson(savedInstanceState.getString(getString(R.string.weekly_response)),WeeklyWeatherResponse.class);
+            todayWR = savedInstanceState.getParcelable(getString(R.string.today_response));
+            if (weeklyWR!=null){
+                Log.e(TAG,"Weekly dolu");
+            }
+            if (todayWR != null){
+                Log.e(TAG,"today dolu");
+            }
         }
     }
 }

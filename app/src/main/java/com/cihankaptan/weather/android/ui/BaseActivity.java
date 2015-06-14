@@ -32,13 +32,13 @@ public class BaseActivity extends AppCompatActivity {
     public WeatherAppLication weatherApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        weatherApp = (WeatherAppLication)getApplication();
         super.onCreate(savedInstanceState);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
 
         setRestAdapter();
-        weatherApp = (WeatherAppLication)getApplication();
 
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
         isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);

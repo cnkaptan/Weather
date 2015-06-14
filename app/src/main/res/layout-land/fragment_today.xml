@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:background="@drawable/stock">
+
+        <ImageView
+            android:id="@+id/weather_icon"
+            android:layout_width="@dimen/ft_weather_icon_width_height"
+            android:layout_height="@dimen/ft_weather_icon_width_height"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/wide_margin_padding"
+            android:layout_marginBottom="@dimen/ft_weather_icon_margin_bottom"
+            android:background="@drawable/gray_background"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/weather_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/normal_text_size"
+            android:layout_alignBottom="@id/weather_icon"
+            android:layout_alignTop="@id/weather_icon"
+            android:gravity="center"
+            android:layout_toRightOf="@id/weather_icon"
+            android:layout_marginLeft="@dimen/standart_margin_padding"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/weather_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/big_text_size"
+            android:textColor="@color/white"
+            android:layout_above="@id/weather_icon"
+            android:layout_alignLeft="@id/weather_icon"
+            android:layout_marginBottom="@dimen/standart_margin_padding"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/weather_degree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/ft_weather_degree_text_size"
+            android:textColor="@color/white"
+            android:text="@string/degree_symbol"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/weather_icon"
+            android:layout_alignTop="@id/weather_city"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/wide_margin_padding"
+            tools:ignore="RelativeOverlap,RtlHardcoded" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/weather_humidity"
+                    android:text="@string/percent_symbol"
+                    android:drawableLeft="@drawable/ic_weather_humidity"
+                    style="@style/TodayFragmentExtraInformationsLandscape"
+                    tools:ignore="RtlHardcoded" />
+
+                <TextView
+                    android:id="@+id/weather_precipitation"
+                    style="@style/TodayFragmentExtraInformationsLandscape"
+                    android:text="@string/mm"
+                    android:drawableLeft="@drawable/ic_weather_precipitation"
+                    tools:ignore="RtlHardcoded" />
+
+                <TextView
+                    android:id="@+id/weather_pressure"
+                    style="@style/TodayFragmentExtraInformationsLandscape"
+                    android:text="@string/hPa"
+                    android:drawableLeft="@drawable/ic_weather_pressure"
+                    tools:ignore="RtlHardcoded" />
+
+
+                <TextView
+                    android:id="@+id/weather_wind"
+                    style="@style/TodayFragmentExtraInformationsLandscape"
+                    android:text="@string/km_h"
+                    android:drawableLeft="@drawable/ic_weather_wind"
+                    tools:ignore="RtlHardcoded" />
+
+                <TextView
+                    android:id="@+id/weather_direction"
+                    style="@style/TodayFragmentExtraInformationsLandscape"
+                    android:text="@string/minus"
+                    android:drawableLeft="@drawable/ic_weather_direction"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

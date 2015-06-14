@@ -15,4 +15,14 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+
+    <style name="TodayFragmentExtraInformationsLandscape" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/zero_dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">@dimen/standart_margin_padding</item>
+        <item name="android:paddingLeft">@dimen/standart_margin_padding</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
 </resources>
